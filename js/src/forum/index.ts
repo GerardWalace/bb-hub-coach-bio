@@ -11,11 +11,9 @@ app.initializers.add('gerardwalace/bb-hub-coach-bio', () => {
 
   extend(UserCard.prototype, 'infoItems', function (items) {
     // let user = this.attrs.user;
-
     // if (!user.attribute('canViewBio')) {
     //   return;
     // }
-
     // items.add('bio', <UserBio user={user} />, -100);
   });
   console.log('[gerardwalace/bb-hub-coach-bio] Great, forum!');
