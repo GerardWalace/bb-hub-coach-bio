@@ -15,6 +15,7 @@ app.initializers.add('gerardwalace/bb-hub-coach-bio', () => {
     //   return;
     // }
     // items.add('bio', <UserBio user={user} />, -100);
+    items.add('coachBio', '<p>Coucou</p>', -100);
   });
-  console.log('[gerardwalace/bb-hub-coach-bio] Great, forum!');
+  console.log('[gerardwalace/bb-hub-coach-bio] Great forum Bro!');
 });
