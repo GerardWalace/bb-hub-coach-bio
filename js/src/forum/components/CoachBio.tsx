@@ -1,174 +1,27 @@
-import app from 'flarum/forum/app';
 import Component from 'flarum/common/Component';
-// // import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
-// // import classList from 'flarum/common/utils/classList';
-// // import extractText from 'flarum/common/utils/extractText';
+
+import Team from '../Team';
+import User from 'flarum/common/models/User';
 
 export default class CoachBio extends Component {
-  // //   oninit(vnode) {
-  // //     super.oninit(vnode);
-  // //     /**
-  // //      * Whether or not the bio is currently being edited.
-  // //      *
-  // //      * @type {Boolean}
-  // //      */
-  // //     this.editing = false;
-
-  // //     /**
-  // //      * Whether or not the bio is currently being saved.
-  // //      *
-  // //      * @type {Boolean}
-  // //      */
-  // //     this.loading = false;
-
-  // //     /**
-  // //      * The max configured character count the bio may be
-  // //      */
-  // //     this.bioMaxLength = app.forum.attribute('fof-user-bio.maxLength');
-
-  // //     /**
-  // //      * The placeholder shown in the bio textbox when no input is set.
-  // //      */
-  // //     this.bioPlaceholder =
-  // //       app.session && app.session.user && app.session.user.id() === this.attrs.user.id()
-  // //         ? // Normal placeholder if they're looking at their own profile
-  // //           app.translator.trans('fof-user-bio.forum.userbioPlaceholder')
-  // //         : // Special placeholder if someone else is viewing their profile with edit access
-  // //           app.translator.trans('fof-user-bio.forum.userbioPlaceholderOtherUser', {
-  // //             username: this.attrs.user.displayName(),
-  // //           });
-  // //   }
-
   view() {
-         const user = this.attrs.user;
-    //     // const editable = this.attrs.user.attribute('canEditBio');
-    //     // let content;
+    const user = this.attrs.user as User;
+    const teams = user.teams() as Team[];
 
-    //     // if (this.editing) {
-    //     //   const tempBio = this.tempBio;
-    //     //   const value = tempBio ?? user.bio();
-
-    //     //   const focusIfErrored = (vnode) => {
-    //     //     const textarea = vnode.dom;
-
-    //     //     textarea.value = value;
-
-    //     //     if (tempBio !== undefined) {
-    //     //       textarea.value = tempBio;
-    //     //       textarea.focus();
-
-    //     //       if (this.tempSelector !== undefined) {
-    //     //         textarea.selectionStart = this.tempSelector;
-    //     //         textarea.selectionEnd = this.tempSelector;
-
-    //     //         delete this.tempSelector;
-    //     //       }
-    //     //     }
-    //     //   };
-
-    //     //   content = (
-    //     //     <textarea
-    //     //       className="FormControl"
-    //     //       placeholder={extractText(this.bioPlaceholder)}
-    //     //       rows="3"
-    //     //       maxlength={this.bioMaxLength}
-    //     //       oncreate={focusIfErrored}
-    //     //     />
-    //     //   );
-    //     // } else {
-    //     //   let subContent;
-
-    //     //   if (this.loading) {
-    //     //     subContent = (
-    //     //       <p className="UserBio-placeholder">
-    //     //         <LoadingIndicator />
-    //     //       </p>
-    //     //     );
-    //     //   } else {
-    //     //     const bioHtml = user.bioHtml();
-
-    //     //     if (bioHtml) {
-    //     //       subContent = m.trust(bioHtml);
-    //     //     } else if (user.bio()) {
-    //     //       subContent = m.trust('<p>' + $('<div/>').text(user.bio()).html().replace(/\n/g, '<br>').autoLink({ rel: 'nofollow ugc' }) + '</p>');
-    //     //     } else if (editable) {
-    //     //       subContent = <p className="UserBio-placeholder">{this.bioPlaceholder}</p>;
-    //     //     }
-    //     //   }
-
-    //     //   const maxLines = app.forum.attribute('fof-user-bio.maxLines');
-
-    //     //   content = (
-    //     //     <div className="UserBio-content" onclick={editable ? this.edit.bind(this) : () => undefined} style={{ '--bio-max-lines': maxLines }}>
-    //     //       {subContent}
-    //     //     </div>
-    //     //   );
-    //     // }
-
-    return (
-      <div className="CoachBio">
-        <a className="CoachBio-team" href="https://www.lutececup.org/index.php?page=15&amp;team_id=56" title="Voir le roster">
-            <img loading="eager" class="Avatar" src="https://www.lutececup.org/img/blason/blason_56.jpg" alt="Blason" />
-            <span>Pets, Sécrétions et Gargouillis</span>
+    let placeholder = <div className="CoachBio"></div>;
+    if (teams && teams.length > 0) {
+      const team = teams[0];
+      placeholder = (
+        <div className="CoachBio">
+          <a className="CoachBio-team" href={`https://www.lutececup.org/index.php?page=15&amp;team_id=${team.id()}`} title="Voir le roster">
+            <img loading="eager" class="Avatar" src={`https://www.lutececup.org/img/blason/blason_${team.id()}.jpg`} alt="Blason" />
+            <span>{team.team_nom()}</span>
             <span>(Gobelins)</span>
-        </a>
-      </div>
-    );
+          </a>
+        </div>
+      );
+    }
+
+    return placeholder;
   }
-
-  // //   /**
-  // //    * Edit the bio.
-  // //    */
-  // //   edit() {
-  // //     this.editing = true;
-  // //     m.redraw.sync();
-
-  // //     const bio = this;
-  // //     const save = function (e) {
-  // //       if (e.shiftKey) return;
-  // //       e.preventDefault();
-
-  // //       bio.save(e.target.value, e.type === 'blur');
-  // //     };
-
-  // //     this.$('textarea').trigger('focus').on('blur', save).bind('keydown', 'return', save);
-  // //     m.redraw();
-  // //   }
-
-  // //   /**
-  // //    * Save the bio.
-  // //    *
-  // //    * @param {String} value
-  // //    */
-  // //   save(value, wasBlurred) {
-  // //     const user = this.attrs.user;
-  // //     const tempSelector = this.$('textarea').prop('selectionStart');
-
-  // //     const shouldIgnore = wasBlurred && value === this.tempBio;
-
-  // //     // Don't constantly try to save when blurring textarea
-  // //     if (!shouldIgnore && user.bio() !== value) {
-  // //       this.loading = true;
-
-  // //       user
-  // //         .save({ bio: value })
-  // //         .catch(() => {
-  // //           this.tempBio = value;
-  // //           this.tempSelector = tempSelector;
-  // //           this.edit();
-  // //         })
-  // //         .then(() => {
-  // //           this.loading = false;
-  // //           delete this.tempBio;
-  // //           m.redraw();
-  // //         });
-  // //     }
-
-  // //     if (shouldIgnore) {
-  // //       delete this.tempBio;
-  // //     }
-
-  // //     this.editing = false;
-  // //     m.redraw();
-  // //   }
 }
