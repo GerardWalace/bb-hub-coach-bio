@@ -31,6 +31,11 @@ return [
         ->get('/teams', 'teams.index', Api\Controller\ListTeamsController::class)
         ->get('/teams/{id}', 'teams.show', Api\Controller\ShowTeamController::class),
 
+    // On rajoute les api pour requeter les Races
+    (new Extend\Routes('api'))
+        ->get('/bb_races', 'bb_races.index', Api\Controller\ListBbRacesController::class)
+        ->get('/bb_races/{id}', 'bb_races.show', Api\Controller\ShowBbRaceController::class),
+
     // On met à jour le model des User pour rajouter les Teams
     (new Extend\Model(User::class))
         ->hasMany('teams', Team::class, 'coach_id'),
@@ -42,11 +47,13 @@ return [
     // On met à jour l'API show
     (new Extend\ApiController(ShowUserController::class))
         ->addInclude('teams')
+        ->addInclude('teams.race')
         ->prepareDataForSerialization(function ($controller, $data) {
             $data->load('teams');
         }),
 
     // On met à jour l'API show des discussions
     (new Extend\ApiController(ShowDiscussionController::class))
-        ->addInclude('posts.user.teams'),
+        ->addInclude('posts.user.teams')
+        ->addInclude('posts.user.teams.race'),
 ];

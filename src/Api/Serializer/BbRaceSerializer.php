@@ -4,22 +4,21 @@ namespace GerardWalace\BbHubCoachBio\Api\Serializer;
 
 use Flarum\Api\Serializer\AbstractSerializer;
 use GerardWalace\BbHubCoachBio\BbRace;
-use GerardWalace\BbHubCoachBio\Team;
 use InvalidArgumentException;
 
-class TeamSerializer extends AbstractSerializer
+class BbRaceSerializer extends AbstractSerializer
 {
     /**
      * {@inheritdoc}
      */
-    protected $type = 'teams';
+    protected $type = BbRace::class;
 
     /**
      * {@inheritdoc}
      */
     public function getId($model)
     {
-        return $model->team_id;
+        return $model->race_id;
     }
 
     /**
@@ -30,21 +29,14 @@ class TeamSerializer extends AbstractSerializer
      */
     protected function getDefaultAttributes($model)
     {
-        if (!($model instanceof Team)) {
+        if (!($model instanceof BbRace)) {
             throw new InvalidArgumentException(
-                get_class($this) . ' can only serialize instances of ' . Team::class
+                get_class($this) . ' can only serialize instances of ' . BbRace::class
             );
         }
 
         return [
-            'coach_id' => $model->coach_id,
-            'team_nom' => $model->team_nom,
-            'race_id' => $model->race_id,
+            'race_nom' => $model->race_nom,
         ];
-    }
-
-    protected function race($team)
-    {
-        return $this->hasOne($team, BbRaceSerializer::class);
     }
 }
