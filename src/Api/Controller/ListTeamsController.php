@@ -15,6 +15,9 @@ class ListTeamsController extends AbstractListController
      */
     public $serializer = TeamSerializer::class;
 
+    // The relationships that are included by default.
+    public $include = ['race'];
+
     /**
      * {@inheritdoc}
      */

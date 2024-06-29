@@ -11,7 +11,7 @@ class BbRaceSerializer extends AbstractSerializer
     /**
      * {@inheritdoc}
      */
-    protected $type = BbRace::class;
+    protected $type = 'bb_races';
 
     /**
      * {@inheritdoc}
